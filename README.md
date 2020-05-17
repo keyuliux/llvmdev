@@ -1,4 +1,20 @@
 
+install from prebuild binary
+
+cp llvm prebuild to /usr/local/
+
+sudo gedit /etc/profile
+export LLVM_HOME=/usr/local/llvm/bin
+export PATH=$LLVM_HOME:$PATH
+
+install antlr
+ 1850  wget http://www.antlr.org/download/antlr-4.6-complete.jar
+sudo gedit /etc/profile
+export CLASSPATH=".:/path/to/antlr-4.6-complete.jar:$CLASSPATH"
+sudo gedit ~/.bashrc
+alias antlr4='java -jar /path/to/antlr-4.6-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
+
 
 Chapter3
 
@@ -26,6 +42,16 @@ $clang sum.linked.o -o sum
 
 
 Chapter4
+
+Libraries
+libclangLex
+libclangAST
+libclangParse
+libclangSema
+libclangCodeGen
+libclangAnalysis
+libclangRewrite
+libclangBasic
 
 $clang -Xclang -ast-dump hello.c
 $clang -cc1 -ast-dump hello.c
