@@ -7,6 +7,15 @@ sudo gedit /etc/profile
 export LLVM_HOME=/usr/local/llvm/bin
 export PATH=$LLVM_HOME:$PATH
 
+Fix llvm3.8 cmake error
+sudo apt-get install -y llvm-3.8-dev libclang-3.8-dev
+sudo mkdir -p /usr/lib/llvm-3.8/share/llvm
+sudo ln -s /usr/share/llvm-3.8/cmake /usr/lib/llvm-3.8/share/llvm/cmake
+sudo sed -i -e '/get_filename_component(LLVM_INSTALL_PREFIX/ {s|^|#|}' -e '/^# Compute the installation prefix/i set(LLVM_INSTALL_PREFIX "/usr/lib/llvm-3.8")' /usr/lib/llvm-3.8/share/llvm/cmake/LLVMConfig.cmake
+sudo sed -i '/_IMPORT_CHECK_TARGETS Polly/ {s|^|#|}' /usr/lib/llvm-3.8/share/llvm/cmake/LLVMExports-relwithdebinfo.cmake
+sudo sed -i '/_IMPORT_CHECK_TARGETS sancov/ {s|^|#|}' /usr/lib/llvm-3.8/share/llvm/cmake/LLVMExports-relwithdebinfo.cmake
+sudo ln -s /usr/lib/x86_64-linux-gnu/libLLVM-3.8.so.1 /usr/lib/llvm-3.8/lib/
+
 install antlr
  1850  wget http://www.antlr.org/download/antlr-4.6-complete.jar
 sudo gedit /etc/profile
@@ -15,6 +24,14 @@ sudo gedit ~/.bashrc
 alias antlr4='java -jar /path/to/antlr-4.6-complete.jar'
 alias grun='java org.antlr.v4.gui.TestRig'
 
+antlr4 -Dlanguage=Cpp -no-listener -visitor LabeledExpr.g4 
+grun Expr prog -gui t.expr
+
+frontend-antlr4
+antlr4 Hello.g4 -visitor
+antlr4 -Dlanguage=Cpp Lua.g4 -visitor
+
+backend-llvm
 
 Chapter3
 
@@ -135,6 +152,19 @@ $lli sum-main.bc
 
 $lli -use-mcjit sum-main.bc
 $lli -force-interpreter sum-main.bc
+
+Clang
+CodeGenFunction Class Emit*** function
+
+from 2.3 release, we could see each patch in reviews web.
+https://reviews.llvm.org/source/llvm-github/history/release%252F2.3.x/clang/lib/CodeGen/
+
+llvm bindings
+llvm_ocaml.c
+
+llvm2.1
+LLVMBuilder.h
+
 
 
 
